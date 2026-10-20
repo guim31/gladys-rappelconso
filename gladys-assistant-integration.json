@@ -1,177 +1,780 @@
 {
   "manifest_version": 1,
   "type": "device",
-  "name": "Demo Devices Template",
+  "name": "RappelConso",
   "description": {
-    "en": "Starter template showing sensors, a switch, a dimmable light and a smart plug.",
-    "fr": "Template de démarrage : capteurs, interrupteur, lampe variable et prise connectée."
+    "en": "Product recalls in France (RappelConso): be told when a product you follow is recalled.",
+    "fr": "Rappels de produits en France (RappelConso) : soyez prévenu quand un produit suivi est rappelé.",
+    "de": "Produktrückrufe in Frankreich (RappelConso): Werde informiert, wenn ein Produkt zurückgerufen wird.",
+    "es": "Retiradas de productos en Francia (RappelConso): reciba un aviso si se retira un producto seguido."
   },
   "version": "1.0.0",
-  "docker_image": "ghcr.io/gladysassistant/integration-template-js:1.0.0",
+  "docker_image": "ghcr.io/guim31/gladys-rappelconso:1.0.0",
   "gladys_version": ">=5.1.0",
-  "cover_image": "https://raw.githubusercontent.com/GladysAssistant/integration-template-js/master/cover.png",
-  "categories": ["lighting", "security", "environment"],
-  "transports": ["local", "cloud"],
+  "cover_image": "https://raw.githubusercontent.com/guim31/gladys-rappelconso/main/cover.png",
+  "categories": ["security", "notifications"],
+  "transports": ["cloud"],
   "config_schema": [
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
+      "label": {
+        "en": "Your selection",
+        "fr": "Votre sélection",
+        "de": "Deine Auswahl",
+        "es": "Su selección"
+      },
       "description": {
-        "en": "The demo weather station reads real data from the free Open-Meteo API: pick the coordinates to observe. No account, no API key.",
-        "fr": "La station météo de démonstration lit de vraies données via l'API gratuite Open-Meteo : choisissez les coordonnées à observer. Pas de compte, pas de clé d'API."
+        "en": "RappelConso lists the products recalled in France: food, toys, cars, appliances… Choose the categories to follow, and if you like brands, words or the barcodes of products you have at home. Save, then create the device in the Discover tab.",
+        "fr": "RappelConso publie les rappels de produits en France : alimentation, jouets, voitures, appareils… Choisissez les catégories à suivre et, si vous le souhaitez, des marques, des mots ou les codes-barres de produits que vous avez chez vous. Enregistrez, puis créez l'appareil dans l'onglet Découverte.",
+        "de": "RappelConso listet die in Frankreich zurückgerufenen Produkte: Lebensmittel, Spielzeug, Autos, Geräte… Wähle die zu verfolgenden Kategorien und, wenn du willst, Marken, Wörter oder die Barcodes von Produkten, die du zu Hause hast. Speichere und lege dann das Gerät im Tab „Entdecken“ an.",
+        "es": "RappelConso publica las retiradas de productos en Francia: alimentos, juguetes, coches, aparatos… Elija las categorías que desea seguir y, si lo desea, marcas, palabras o los códigos de barras de productos que tiene en casa. Guarde y cree el dispositivo en la pestaña Descubrir."
       },
       "links": [
         {
-          "url": "https://open-meteo.com/en/docs",
-          "label": { "en": "Open-Meteo documentation", "fr": "Documentation Open-Meteo" }
+          "url": "https://github.com/guim31/gladys-rappelconso/blob/main/docs/en.md",
+          "label": {
+            "en": "Setup guide",
+            "fr": "Guide d'installation",
+            "de": "Installationsanleitung",
+            "es": "Guía de instalación"
+          }
         }
       ]
     },
     {
-      "key": "latitude",
-      "type": "number",
-      "label": { "en": "Latitude", "fr": "Latitude" },
-      "description": {
-        "en": "Latitude used for the demo weather sensor.",
-        "fr": "Latitude utilisée par le capteur météo de démonstration."
+      "key": "about",
+      "type": "section",
+      "label": {
+        "en": "Sources and limits",
+        "fr": "Sources et limites",
+        "de": "Quellen und Grenzen",
+        "es": "Fuentes y límites"
       },
-      "placeholder": { "en": "e.g. 48.8566", "fr": "ex. 48.8566" },
-      "required": true,
-      "default": 48.8566,
-      "min": -90,
-      "max": 90
-    },
-    {
-      "key": "longitude",
-      "type": "number",
-      "label": { "en": "Longitude", "fr": "Longitude" },
       "description": {
-        "en": "Longitude used for the demo weather sensor.",
-        "fr": "Longitude utilisée par le capteur météo de démonstration."
+        "en": "Data: RappelConso (DGCCRF and other French administrations), open data under the Licence Ouverte 2.0, read without an account. A complement, not an official alert system: always check the recall sheet. Not affiliated with the French administration.",
+        "fr": "Données : RappelConso (DGCCRF et autres administrations), données ouvertes sous Licence Ouverte 2.0, lues sans compte. Un complément, pas un système d'alerte officiel : vérifiez toujours la fiche de rappel. Non affiliée à l'administration.",
+        "de": "Daten: RappelConso (DGCCRF und weitere französische Behörden), offene Daten unter der Licence Ouverte 2.0, ohne Konto gelesen. Eine Ergänzung, kein offizielles Warnsystem: Prüfe immer das Rückrufblatt. Nicht mit der französischen Verwaltung verbunden.",
+        "es": "Datos: RappelConso (DGCCRF y otras administraciones francesas), datos abiertos bajo la Licence Ouverte 2.0, leídos sin cuenta. Un complemento, no un sistema de alerta oficial: compruebe siempre la ficha de retirada. Sin afiliación con la administración francesa."
       },
-      "placeholder": { "en": "e.g. 2.3522", "fr": "ex. 2.3522" },
-      "required": true,
-      "default": 2.3522,
-      "min": -180,
-      "max": 180
-    },
-    {
-      "key": "unit",
-      "type": "select",
-      "label": { "en": "Temperature unit", "fr": "Unité de température" },
-      "required": false,
-      "default": "celsius",
-      "options": [
-        { "value": "celsius", "label": { "en": "Celsius", "fr": "Celsius" } },
-        { "value": "fahrenheit", "label": { "en": "Fahrenheit", "fr": "Fahrenheit" } }
+      "links": [
+        {
+          "url": "https://rappel.conso.gouv.fr",
+          "label": {
+            "en": "RappelConso website",
+            "fr": "Site RappelConso",
+            "de": "Website von RappelConso",
+            "es": "Sitio web de RappelConso"
+          }
+        },
+        {
+          "url": "https://data.economie.gouv.fr/explore/dataset/rappelconso-v2-gtin-espaces/",
+          "label": {
+            "en": "Open data",
+            "fr": "Données ouvertes",
+            "de": "Offene Daten",
+            "es": "Datos abiertos"
+          }
+        }
       ]
     },
     {
-      "key": "poll_frequency",
-      "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
+      "key": "categories",
+      "type": "multi_select",
+      "label": {
+        "en": "Categories",
+        "fr": "Catégories",
+        "de": "Kategorien",
+        "es": "Categorías"
+      },
       "description": {
-        "en": "How often sensors are polled, in seconds (one minute minimum).",
-        "fr": "Fréquence d'interrogation des capteurs, en secondes (une minute minimum)."
+        "en": "Recalls of these categories are followed. About 90 recalls a week, three quarters of them food.",
+        "fr": "Les rappels de ces catégories sont suivis. Environ 90 rappels par semaine, aux trois quarts alimentaires.",
+        "de": "Die Rückrufe dieser Kategorien werden verfolgt. Etwa 90 Rückrufe pro Woche, zu drei Vierteln Lebensmittel.",
+        "es": "Se siguen las retiradas de estas categorías. Unas 90 retiradas por semana, tres cuartas partes de alimentos."
       },
       "required": false,
-      "default": 300,
-      "min": 60,
-      "max": 3600
+      "default": [
+        "food",
+        "baby_child",
+        "hygiene_beauty",
+        "home",
+        "electrical",
+        "vehicles",
+        "clothing",
+        "sports_leisure",
+        "communication",
+        "other"
+      ],
+      "options": [
+        {
+          "value": "food",
+          "label": {
+            "en": "Food",
+            "fr": "Alimentation",
+            "de": "Lebensmittel",
+            "es": "Alimentación"
+          }
+        },
+        {
+          "value": "baby_child",
+          "label": {
+            "en": "Babies and children (non-food)",
+            "fr": "Bébés-enfants (hors alimentaire)",
+            "de": "Babys und Kinder (außer Lebensmittel)",
+            "es": "Bebés y niños (no alimentario)"
+          }
+        },
+        {
+          "value": "hygiene_beauty",
+          "label": {
+            "en": "Hygiene and beauty",
+            "fr": "Hygiène-beauté",
+            "de": "Hygiene und Schönheit",
+            "es": "Higiene y belleza"
+          }
+        },
+        {
+          "value": "home",
+          "label": {
+            "en": "Home and housing",
+            "fr": "Maison-habitat",
+            "de": "Haus und Wohnen",
+            "es": "Hogar y vivienda"
+          }
+        },
+        {
+          "value": "electrical",
+          "label": {
+            "en": "Electrical appliances, tools",
+            "fr": "Appareils électriques, outils",
+            "de": "Elektrogeräte, Werkzeuge",
+            "es": "Aparatos eléctricos, herramientas"
+          }
+        },
+        {
+          "value": "vehicles",
+          "label": {
+            "en": "Cars and means of transport",
+            "fr": "Automobiles et moyens de déplacement",
+            "de": "Autos und Fortbewegungsmittel",
+            "es": "Automóviles y medios de transporte"
+          }
+        },
+        {
+          "value": "clothing",
+          "label": {
+            "en": "Clothing, fashion, protective equipment",
+            "fr": "Vêtements, mode, EPI",
+            "de": "Kleidung, Mode, Schutzausrüstung",
+            "es": "Ropa, moda, equipos de protección"
+          }
+        },
+        {
+          "value": "sports_leisure",
+          "label": {
+            "en": "Sports and leisure",
+            "fr": "Sports-loisirs",
+            "de": "Sport und Freizeit",
+            "es": "Deporte y ocio"
+          }
+        },
+        {
+          "value": "communication",
+          "label": {
+            "en": "Communication equipment",
+            "fr": "Équipements de communication",
+            "de": "Kommunikationsgeräte",
+            "es": "Equipos de comunicación"
+          }
+        },
+        {
+          "value": "other",
+          "label": {
+            "en": "Other",
+            "fr": "Autres",
+            "de": "Sonstiges",
+            "es": "Otros"
+          }
+        }
+      ]
+    },
+    {
+      "key": "keywords",
+      "type": "string",
+      "label": {
+        "en": "Brands or words (optional)",
+        "fr": "Marques ou mots (facultatif)",
+        "de": "Marken oder Wörter (optional)",
+        "es": "Marcas o palabras (opcional)"
+      },
+      "description": {
+        "en": "Only the recalls naming one of them (brand, product or references), separated by commas, in French like the sheets. Accents and case do not matter. Empty: every recall of the categories.",
+        "fr": "Seulement les rappels qui en citent un (marque, produit ou références), séparés par des virgules. Accents et majuscules indifférents. Vide : tous les rappels des catégories.",
+        "de": "Nur die Rückrufe, die eines davon nennen (Marke, Produkt oder Referenzen), durch Kommas getrennt, auf Französisch wie die Blätter. Akzente und Großschreibung egal. Leer: alle Rückrufe der Kategorien.",
+        "es": "Solo las retiradas que mencionan alguna (marca, producto o referencias), separadas por comas, en francés como las fichas. Acentos y mayúsculas indiferentes. Vacío: todas las retiradas de las categorías."
+      },
+      "placeholder": {
+        "en": "e.g. Lactalis, lait infantile, poussette",
+        "fr": "ex. Lactalis, lait infantile, poussette",
+        "de": "z. B. Lactalis, lait infantile, poussette",
+        "es": "p. ej. Lactalis, lait infantile, poussette"
+      },
+      "required": false,
+      "default": ""
+    },
+    {
+      "key": "barcodes",
+      "type": "string",
+      "label": {
+        "en": "Barcodes of your products (optional)",
+        "fr": "Codes-barres de vos produits (facultatif)",
+        "de": "Barcodes deiner Produkte (optional)",
+        "es": "Códigos de barras de sus productos (opcional)"
+      },
+      "description": {
+        "en": "The numbers under the barcodes (EAN, 8 to 14 digits), separated by commas. Followed in every category, past recalls still running included.",
+        "fr": "Les chiffres sous les codes-barres (EAN, 8 à 14 chiffres), séparés par des virgules. Suivis dans toutes les catégories, rappels passés encore en cours compris.",
+        "de": "Die Ziffern unter den Barcodes (EAN, 8 bis 14 Ziffern), durch Kommas getrennt. In allen Kategorien verfolgt, laufende frühere Rückrufe eingeschlossen.",
+        "es": "Las cifras bajo los códigos de barras (EAN, de 8 a 14 cifras), separadas por comas. Seguidos en todas las categorías, incluidas las retiradas anteriores aún en curso."
+      },
+      "placeholder": {
+        "en": "e.g. 3017620422003, 3560071286262",
+        "fr": "ex. 3017620422003, 3560071286262",
+        "de": "z. B. 3017620422003, 3560071286262",
+        "es": "p. ej. 3017620422003, 3560071286262"
+      },
+      "required": false,
+      "default": ""
+    },
+    {
+      "key": "refresh_interval",
+      "type": "select",
+      "label": {
+        "en": "Refresh interval",
+        "fr": "Fréquence de mise à jour",
+        "de": "Aktualisierungsintervall",
+        "es": "Intervalo de actualización"
+      },
+      "description": {
+        "en": "RappelConso publishes a few recalls an hour on working days: once an hour is enough.",
+        "fr": "RappelConso publie quelques rappels par heure les jours ouvrés : une fois par heure suffit.",
+        "de": "RappelConso veröffentlicht werktags einige Rückrufe pro Stunde: Einmal pro Stunde reicht.",
+        "es": "RappelConso publica algunas retiradas por hora en días laborables: una vez por hora basta."
+      },
+      "required": false,
+      "default": "60",
+      "options": [
+        {
+          "value": "15",
+          "label": {
+            "en": "15 minutes",
+            "fr": "15 minutes",
+            "de": "15 Minuten",
+            "es": "15 minutos"
+          }
+        },
+        {
+          "value": "30",
+          "label": {
+            "en": "30 minutes",
+            "fr": "30 minutes",
+            "de": "30 Minuten",
+            "es": "30 minutos"
+          }
+        },
+        {
+          "value": "60",
+          "label": {
+            "en": "1 hour",
+            "fr": "1 heure",
+            "de": "1 Stunde",
+            "es": "1 hora"
+          }
+        },
+        {
+          "value": "180",
+          "label": {
+            "en": "3 hours",
+            "fr": "3 heures",
+            "de": "3 Stunden",
+            "es": "3 horas"
+          }
+        },
+        {
+          "value": "360",
+          "label": {
+            "en": "6 hours",
+            "fr": "6 heures",
+            "de": "6 Stunden",
+            "es": "6 horas"
+          }
+        }
+      ]
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
+      "description": {
+        "en": "Names of the features (at their creation) and texts sent to the scenes. The recall sheets stay in French.",
+        "fr": "Noms des fonctionnalités (à leur création) et textes envoyés aux scènes. Les fiches de rappel restent en français.",
+        "de": "Namen der Funktionen (bei ihrer Erstellung) und Texte für die Szenen. Die Rückrufblätter bleiben auf Französisch.",
+        "es": "Nombres de las funciones (al crearlas) y textos enviados a las escenas. Las fichas de retirada siguen en francés."
+      },
+      "required": false,
+      "default": "fr",
+      "options": [
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "Anglais",
+            "de": "Englisch",
+            "es": "Inglés"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "French",
+            "fr": "Français",
+            "de": "Französisch",
+            "es": "Francés"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "German",
+            "fr": "Allemand",
+            "de": "Deutsch",
+            "es": "Alemán"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "fr": "Espagnol",
+            "de": "Spanisch",
+            "es": "Español"
+          }
+        }
+      ]
     }
   ],
   "actions": [
     {
-      "key": "test_weather",
-      "label": { "en": "Test the weather provider", "fr": "Tester le fournisseur météo" },
-      "timeout_seconds": 30
-    },
-    {
-      "key": "identify",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "fields": [
-        {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
-        }
-      ]
+      "key": "check_now",
+      "label": {
+        "en": "Show the recalls of the week",
+        "fr": "Afficher les rappels de la semaine",
+        "de": "Rückrufe der Woche anzeigen",
+        "es": "Mostrar las retiradas de la semana"
+      },
+      "timeout_seconds": 60
     }
   ],
   "scene_triggers": [
     {
-      "key": "motion_detected",
-      "label": { "en": "Motion detected", "fr": "Mouvement détecté" },
+      "key": "new_recall",
+      "label": {
+        "en": "RappelConso: new recall in my selection",
+        "fr": "RappelConso : nouveau rappel dans ma sélection",
+        "de": "RappelConso: neuer Rückruf in meiner Auswahl",
+        "es": "RappelConso: nueva retirada en mi selección"
+      },
       "description": {
-        "en": "A demo motion sensor saw a person or an animal move.",
-        "fr": "Un détecteur de démonstration a vu bouger une personne ou un animal."
+        "en": "A product of the followed categories, brands, words or barcodes is recalled.",
+        "fr": "Un produit des catégories, marques, mots ou codes-barres suivis est rappelé.",
+        "de": "Ein Produkt der verfolgten Kategorien, Marken, Wörter oder Barcodes wird zurückgerufen.",
+        "es": "Se retira un producto de las categorías, marcas, palabras o códigos de barras seguidos."
       },
       "fields": [
         {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Sensor", "fr": "Détecteur" }
-        },
-        {
-          "key": "target",
+          "key": "category",
           "type": "multi_select",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" },
+          "label": {
+            "en": "Categories",
+            "fr": "Catégories",
+            "de": "Kategorien",
+            "es": "Categorías"
+          },
           "options": [
-            { "value": "person", "label": { "en": "Person", "fr": "Personne" } },
-            { "value": "animal", "label": { "en": "Animal", "fr": "Animal" } }
+            {
+              "value": "food",
+              "label": {
+                "en": "Food",
+                "fr": "Alimentation",
+                "de": "Lebensmittel",
+                "es": "Alimentación"
+              }
+            },
+            {
+              "value": "baby_child",
+              "label": {
+                "en": "Babies and children (non-food)",
+                "fr": "Bébés-enfants (hors alimentaire)",
+                "de": "Babys und Kinder (außer Lebensmittel)",
+                "es": "Bebés y niños (no alimentario)"
+              }
+            },
+            {
+              "value": "hygiene_beauty",
+              "label": {
+                "en": "Hygiene and beauty",
+                "fr": "Hygiène-beauté",
+                "de": "Hygiene und Schönheit",
+                "es": "Higiene y belleza"
+              }
+            },
+            {
+              "value": "home",
+              "label": {
+                "en": "Home and housing",
+                "fr": "Maison-habitat",
+                "de": "Haus und Wohnen",
+                "es": "Hogar y vivienda"
+              }
+            },
+            {
+              "value": "electrical",
+              "label": {
+                "en": "Electrical appliances, tools",
+                "fr": "Appareils électriques, outils",
+                "de": "Elektrogeräte, Werkzeuge",
+                "es": "Aparatos eléctricos, herramientas"
+              }
+            },
+            {
+              "value": "vehicles",
+              "label": {
+                "en": "Cars and means of transport",
+                "fr": "Automobiles et moyens de déplacement",
+                "de": "Autos und Fortbewegungsmittel",
+                "es": "Automóviles y medios de transporte"
+              }
+            },
+            {
+              "value": "clothing",
+              "label": {
+                "en": "Clothing, fashion, protective equipment",
+                "fr": "Vêtements, mode, EPI",
+                "de": "Kleidung, Mode, Schutzausrüstung",
+                "es": "Ropa, moda, equipos de protección"
+              }
+            },
+            {
+              "value": "sports_leisure",
+              "label": {
+                "en": "Sports and leisure",
+                "fr": "Sports-loisirs",
+                "de": "Sport und Freizeit",
+                "es": "Deporte y ocio"
+              }
+            },
+            {
+              "value": "communication",
+              "label": {
+                "en": "Communication equipment",
+                "fr": "Équipements de communication",
+                "de": "Kommunikationsgeräte",
+                "es": "Equipos de comunicación"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other",
+                "fr": "Autres",
+                "de": "Sonstiges",
+                "es": "Otros"
+              }
+            }
           ]
         }
       ],
       "variables": [
         {
-          "key": "target",
+          "key": "product",
           "type": "string",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" }
+          "label": {
+            "en": "Product",
+            "fr": "Produit",
+            "de": "Produkt",
+            "es": "Producto"
+          }
+        },
+        {
+          "key": "brand",
+          "type": "string",
+          "label": {
+            "en": "Brand",
+            "fr": "Marque",
+            "de": "Marke",
+            "es": "Marca"
+          }
+        },
+        {
+          "key": "category",
+          "type": "string",
+          "label": {
+            "en": "Category (food, baby_child…)",
+            "fr": "Catégorie (food, baby_child…)",
+            "de": "Kategorie (food, baby_child…)",
+            "es": "Categoría (food, baby_child…)"
+          }
+        },
+        {
+          "key": "category_name",
+          "type": "string",
+          "label": {
+            "en": "Category, in words",
+            "fr": "Catégorie, en toutes lettres",
+            "de": "Kategorie, ausgeschrieben",
+            "es": "Categoría, en palabras"
+          }
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "label": {
+            "en": "Reason for the recall",
+            "fr": "Motif du rappel",
+            "de": "Grund des Rückrufs",
+            "es": "Motivo de la retirada"
+          }
+        },
+        {
+          "key": "risks",
+          "type": "string",
+          "label": {
+            "en": "Risks",
+            "fr": "Risques encourus",
+            "de": "Risiken",
+            "es": "Riesgos"
+          }
+        },
+        {
+          "key": "url",
+          "type": "string",
+          "label": {
+            "en": "Link to the recall sheet",
+            "fr": "Lien de la fiche de rappel",
+            "de": "Link zum Rückrufblatt",
+            "es": "Enlace a la ficha de retirada"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary, in one sentence",
+            "fr": "Résumé, en une phrase",
+            "de": "Zusammenfassung, in einem Satz",
+            "es": "Resumen, en una frase"
+          }
+        }
+      ]
+    },
+    {
+      "key": "barcode_recalled",
+      "label": {
+        "en": "RappelConso: one of my barcodes is recalled",
+        "fr": "RappelConso : un de mes codes-barres est rappelé",
+        "de": "RappelConso: einer meiner Barcodes wird zurückgerufen",
+        "es": "RappelConso: se retira uno de mis códigos de barras"
+      },
+      "description": {
+        "en": "A running recall names a barcode of your list: check the product at home.",
+        "fr": "Un rappel en cours cite un code-barres de votre liste : vérifiez le produit chez vous.",
+        "de": "Ein laufender Rückruf nennt einen Barcode deiner Liste: Prüfe das Produkt bei dir zu Hause.",
+        "es": "Una retirada en curso menciona un código de barras de su lista: compruebe el producto en casa."
+      },
+      "fields": [
+        {
+          "key": "barcode",
+          "type": "string",
+          "label": {
+            "en": "Barcode (optional)",
+            "fr": "Code-barres (facultatif)",
+            "de": "Barcode (optional)",
+            "es": "Código de barras (opcional)"
+          },
+          "placeholder": {
+            "en": "Digits only, without leading zeros",
+            "fr": "Chiffres seuls, sans zéros devant",
+            "de": "Nur Ziffern, ohne führende Nullen",
+            "es": "Solo cifras, sin ceros a la izquierda"
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "barcode",
+          "type": "string",
+          "label": {
+            "en": "Barcode",
+            "fr": "Code-barres",
+            "de": "Barcode",
+            "es": "Código de barras"
+          }
+        },
+        {
+          "key": "product",
+          "type": "string",
+          "label": {
+            "en": "Product",
+            "fr": "Produit",
+            "de": "Produkt",
+            "es": "Producto"
+          }
+        },
+        {
+          "key": "brand",
+          "type": "string",
+          "label": {
+            "en": "Brand",
+            "fr": "Marque",
+            "de": "Marke",
+            "es": "Marca"
+          }
+        },
+        {
+          "key": "category",
+          "type": "string",
+          "label": {
+            "en": "Category (food, baby_child…)",
+            "fr": "Catégorie (food, baby_child…)",
+            "de": "Kategorie (food, baby_child…)",
+            "es": "Categoría (food, baby_child…)"
+          }
+        },
+        {
+          "key": "category_name",
+          "type": "string",
+          "label": {
+            "en": "Category, in words",
+            "fr": "Catégorie, en toutes lettres",
+            "de": "Kategorie, ausgeschrieben",
+            "es": "Categoría, en palabras"
+          }
+        },
+        {
+          "key": "reason",
+          "type": "string",
+          "label": {
+            "en": "Reason for the recall",
+            "fr": "Motif du rappel",
+            "de": "Grund des Rückrufs",
+            "es": "Motivo de la retirada"
+          }
+        },
+        {
+          "key": "risks",
+          "type": "string",
+          "label": {
+            "en": "Risks",
+            "fr": "Risques encourus",
+            "de": "Risiken",
+            "es": "Riesgos"
+          }
+        },
+        {
+          "key": "url",
+          "type": "string",
+          "label": {
+            "en": "Link to the recall sheet",
+            "fr": "Lien de la fiche de rappel",
+            "de": "Link zum Rückrufblatt",
+            "es": "Enlace a la ficha de retirada"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary, in one sentence",
+            "fr": "Résumé, en une phrase",
+            "de": "Zusammenfassung, in einem Satz",
+            "es": "Resumen, en una frase"
+          }
         }
       ]
     }
   ],
   "scene_actions": [
     {
-      "key": "identify_device",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "description": {
-        "en": "Make a device signal itself (the demo light blinks).",
-        "fr": "Fait se signaler un appareil (la lampe de démonstration clignote)."
+      "key": "read_recalls",
+      "label": {
+        "en": "RappelConso: read the recalls of the week",
+        "fr": "RappelConso : lire les rappels de la semaine",
+        "de": "RappelConso: Rückrufe der Woche lesen",
+        "es": "RappelConso: leer las retiradas de la semana"
       },
-      "timeout_seconds": 15,
-      "fields": [
-        {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
-        }
-      ],
+      "description": {
+        "en": "The recalls of your selection over 7 days as one sentence, to send by message or read aloud.",
+        "fr": "Les rappels de votre sélection sur 7 jours en une phrase, à envoyer par message ou à lire à voix haute.",
+        "de": "Die Rückrufe deiner Auswahl der letzten 7 Tage als ein Satz, zum Senden per Nachricht oder zum Vorlesen.",
+        "es": "Las retiradas de su selección en 7 días en una frase, para enviar por mensaje o leer en voz alta."
+      },
+      "timeout_seconds": 60,
       "outputs": [
         {
-          "key": "signalled",
-          "type": "boolean",
-          "label": { "en": "Device signalled", "fr": "Appareil signalé" }
+          "key": "text",
+          "type": "string",
+          "label": {
+            "en": "Recalls, in one sentence",
+            "fr": "Rappels, en une phrase",
+            "de": "Rückrufe, in einem Satz",
+            "es": "Retiradas, en una frase"
+          }
+        },
+        {
+          "key": "count",
+          "type": "number",
+          "label": {
+            "en": "Recalls in 7 days",
+            "fr": "Rappels sur 7 jours",
+            "de": "Rückrufe in 7 Tagen",
+            "es": "Retiradas en 7 días"
+          }
+        },
+        {
+          "key": "barcode_count",
+          "type": "number",
+          "label": {
+            "en": "Running recalls of my barcodes",
+            "fr": "Rappels en cours de mes codes-barres",
+            "de": "Laufende Rückrufe meiner Barcodes",
+            "es": "Retiradas en curso de mis códigos"
+          }
         }
       ]
     }
   ],
   "widgets": [
     {
-      "key": "demo_status",
-      "label": { "en": "Demo status", "fr": "État de la démo" },
-      "description": {
-        "en": "Live temperature and plug power, plug connection and observed location.",
-        "fr": "Température et puissance en direct, connexion de la prise, position observée."
+      "key": "recalls",
+      "label": {
+        "en": "Product recalls",
+        "fr": "Rappels de produits",
+        "de": "Produktrückrufe",
+        "es": "Retiradas de productos"
       },
-      "icon": "activity",
-      "action_timeout_seconds": 15
+      "description": {
+        "en": "Latest recalls of your selection, your barcodes first, with links to the sheets.",
+        "fr": "Derniers rappels de votre sélection, vos codes-barres d'abord, avec le lien des fiches.",
+        "de": "Neueste Rückrufe deiner Auswahl, deine Barcodes zuerst, mit Links zu den Blättern.",
+        "es": "Últimas retiradas de su selección, sus códigos primero, con enlaces a las fichas."
+      },
+      "icon": "alert-triangle"
     }
   ]
 }
