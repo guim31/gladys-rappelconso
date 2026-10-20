@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-20
+
 ### Added
 
 - A "Product recalls" device fed by the RappelConso open data: recalls of the day and of the last
@@ -22,3 +24,6 @@ the notes of the version's GitHub Release.
 - Scene action "read the recalls of the week", and a configuration button showing them.
 - Dashboard widget with the latest recalls, your barcodes first, and links to the official sheets.
 - Texts and documentation in English, French, German and Spanish.
+
+[Unreleased]: https://github.com/guim31/gladys-rappelconso/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/guim31/gladys-rappelconso/releases/tag/v1.0.0
