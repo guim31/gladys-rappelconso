@@ -287,23 +287,33 @@ export class Monitor {
     const now = this.now();
     const { known, matches } = this.data;
     const seed = !this.data.seeded;
+    const followed = new Set(this.config.barcodes.map(barcodeKey));
     const fired = [];
+    // A pair of a barcode no longer followed is forgotten: followed again,
+    // it fires again.
+    for (const pair of Object.keys(matches)) {
+      if (!followed.has(pair.slice(pair.lastIndexOf(':') + 1))) {
+        delete matches[pair];
+      }
+    }
     // Barcodes first: they are the high-priority news.
     for (const recall of this.barcodeRecalls) {
       for (const barcode of this.barcodesOf(recall)) {
         const pair = `${recall.key}:${barcodeKey(barcode)}`;
-        if (!matches[pair]) {
-          fired.push({ key: TRIGGERS.BARCODE, recall, barcode });
+        if (matches[pair]) {
+          matches[pair] = now;
+        } else {
+          fired.push({ key: TRIGGERS.BARCODE, recall, barcode, mark: () => (matches[pair] = now) });
         }
-        matches[pair] = now;
       }
     }
     // Oldest first, so the scenes hear them in the order of publication.
     for (const recall of [...recent].sort(newestFirst).reverse()) {
       if (!known[recall.key] && !seed && recall.version <= 1 && this.selected(recall)) {
-        fired.push({ key: TRIGGERS.NEW, recall });
+        fired.push({ key: TRIGGERS.NEW, recall, mark: () => (known[recall.key] = now) });
+      } else {
+        known[recall.key] = now;
       }
-      known[recall.key] = now;
     }
     for (const table of [known, matches]) {
       for (const [key, seenAt] of Object.entries(table)) {
@@ -313,22 +323,27 @@ export class Monitor {
       }
     }
     this.data.seeded = true;
-    this.store.save(this.data);
     if (seed) {
       logger.debug(`${recent.length} recall(s) taken as known`);
     }
+    // Marked only once sent: a scene event Gladys refused, or one beyond the
+    // cap of the cycle, is sent again at the next cycle.
     for (const [index, change] of fired.entries()) {
       if (index >= MAX_EVENTS_PER_CYCLE) {
-        logger.debug(`${fired.length - index} more recall(s) not sent to the scenes`);
+        logger.debug(`${fired.length - index} more recall(s) left for the next cycle`);
         break;
       }
-      await this.fire(change);
+      if (await this.fire(change)) {
+        change.mark();
+      }
     }
+    this.store.save(this.data);
   }
 
+  /** Fire one scene event; true once Gladys accepted it. */
   async fire({ key, recall, barcode }) {
     if (key === TRIGGERS.BARCODE) {
-      logger.info(`Barcode ${barcode} recalled: sheet ${recall.key}`);
+      logger.info(`Barcode ${barcodeKey(barcode)} recalled: sheet ${recall.key}`);
     } else {
       // About 90 recalls a week: the logs do not keep them.
       logger.debug(`New recall: sheet ${recall.key}`);
@@ -336,8 +351,10 @@ export class Monitor {
     try {
       await this.gladys.publishSceneEvent(key, this.eventData(recall, barcode));
       this.recovered('scene', 'Scene triggers work again');
+      return true;
     } catch (err) {
       this.failed('scene', 'warn', `Firing the scene trigger failed: ${err.message}`);
+      return false;
     }
   }
 
@@ -356,12 +373,15 @@ export class Monitor {
       risks: clip(recall.risks, MAX_VARIABLE),
       url: recall.url,
       summary: clip(
-        barcode ? p.barcodeSummary({ barcode, name, reason }) : p.summary({ name, reason }),
+        barcode
+          ? p.barcodeSummary({ barcode: barcodeKey(barcode), name, reason })
+          : p.summary({ name, reason }),
         MAX_VARIABLE * 2,
       ),
     };
     if (barcode) {
-      data.barcode = barcode;
+      // Canonical form (digits, no leading zeros): what a scene filter compares to.
+      data.barcode = barcodeKey(barcode);
     }
     return data;
   }

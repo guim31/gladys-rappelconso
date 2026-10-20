@@ -46,9 +46,11 @@ retiradas de la semana** vuelve a leer RappelConso y muestra lo que contiene su 
 ### La selección seguida
 
 Una retirada está en su selección cuando su categoría se sigue **y**, si ha escrito marcas o
-palabras, menciona alguna. Por ejemplo, las categorías «Bebés y niños» y «Alimentación» con las
-palabras `lait infantile, petit pot` siguen la alimentación infantil y todos los artículos de bebé.
-Las fichas están en francés: escriba palabras en francés.
+palabras, menciona alguna. Las palabras se aplican a todas las categorías seguidas y deben estar en
+francés, como las fichas. Por ejemplo, la categoría «Alimentación» con las palabras
+`lait infantile, petit pot` solo sigue las retiradas de leche infantil y potitos; para seguir
+también todos los artículos de bebé, deje las palabras vacías y elija solo la categoría «Bebés y
+niños».
 
 Los códigos de barras se siguen **sean cuales sean las categorías**: una retirada que menciona uno
 de ellos siempre está en su selección. También se buscan en **todo el historial** de RappelConso:
@@ -83,7 +85,8 @@ retirada anterior) no lo dispara, ni tampoco las retiradas de la semana ya publi
 su selección, ni las encontradas en el primer arranque.
 
 **RappelConso: se retira uno de mis códigos de barras.** Una retirada en curso menciona por primera
-vez uno de sus códigos de barras. Filtro opcional: un código, escrito como en los ajustes. También
+vez uno de sus códigos de barras. Filtro opcional: un código, solo cifras y sin ceros a la
+izquierda (`3017620422003`), tal como lo da la variable `barcode`. También
 se dispara cuando añade el código de un producto ya retirado.
 
 Variables de ambos disparadores: producto, marca, categoría (clave estable como `food`), categoría
@@ -142,4 +145,11 @@ solicitudes al día. El conjunto de datos se actualiza varias veces al día.
   producto.
 - Los textos de las fichas están en francés.
 - «Retiradas de hoy» se actualiza en la primera actualización después de medianoche.
+- Una ficha corregida vuelve con una nueva fecha de publicación: cuenta de nuevo en «Retiradas de
+  hoy», «Retiradas en 7 días» y el widget, pero no dispara «nueva retirada». Las fichas de vehículos
+  nunca se numeran como correcciones: una ficha republicada puede dispararlo de nuevo, como mucho
+  una vez al mes.
+- La integración guarda en `/data` lo que ha anunciado: si ese volumen no se puede escribir, las
+  retiradas de códigos de barras se anuncian de nuevo en cada reinicio (un aviso lo indica en los
+  registros).
 - Sin afiliación con la administración francesa. Datos: RappelConso, Licence Ouverte 2.0.

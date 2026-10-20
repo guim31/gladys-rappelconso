@@ -209,16 +209,16 @@
         "es": "Marcas o palabras (opcional)"
       },
       "description": {
-        "en": "Only the recalls naming one of them (brand, product or references), separated by commas. Accents and capitals do not matter. Empty: every recall of the categories.",
+        "en": "Only the recalls naming one of them (brand, product or references), separated by commas, in French like the sheets. Accents and case do not matter. Empty: every recall of the categories.",
         "fr": "Seulement les rappels qui en citent un (marque, produit ou références), séparés par des virgules. Accents et majuscules indifférents. Vide : tous les rappels des catégories.",
-        "de": "Nur die Rückrufe, die eines davon nennen (Marke, Produkt oder Referenzen), durch Kommas getrennt. Akzente und Großschreibung egal. Leer: alle Rückrufe der Kategorien.",
-        "es": "Solo las retiradas que mencionan alguna (marca, producto o referencias), separadas por comas. Acentos y mayúsculas indiferentes. Vacío: todas las retiradas de las categorías."
+        "de": "Nur die Rückrufe, die eines davon nennen (Marke, Produkt oder Referenzen), durch Kommas getrennt, auf Französisch wie die Blätter. Akzente und Großschreibung egal. Leer: alle Rückrufe der Kategorien.",
+        "es": "Solo las retiradas que mencionan alguna (marca, producto o referencias), separadas por comas, en francés como las fichas. Acentos y mayúsculas indiferentes. Vacío: todas las retiradas de las categorías."
       },
       "placeholder": {
-        "en": "e.g. Lactalis, baby milk, Peg Perego",
-        "fr": "ex. Lactalis, lait infantile, Peg Perego",
-        "de": "z. B. Lactalis, Babymilch, Peg Perego",
-        "es": "p. ej. Lactalis, leche infantil, Peg Perego"
+        "en": "e.g. Lactalis, lait infantile, poussette",
+        "fr": "ex. Lactalis, lait infantile, poussette",
+        "de": "z. B. Lactalis, lait infantile, poussette",
+        "es": "p. ej. Lactalis, lait infantile, poussette"
       },
       "required": false,
       "default": ""
@@ -608,10 +608,10 @@
             "es": "Código de barras (opcional)"
           },
           "placeholder": {
-            "en": "Empty: any of your barcodes",
-            "fr": "Vide : n'importe lequel",
-            "de": "Leer: jeder deiner Barcodes",
-            "es": "Vacío: cualquiera de sus códigos"
+            "en": "Digits only, without leading zeros",
+            "fr": "Chiffres seuls, sans zéros devant",
+            "de": "Nur Ziffern, ohne führende Nullen",
+            "es": "Solo cifras, sin ceros a la izquierda"
           }
         }
       ],

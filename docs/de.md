@@ -45,9 +45,11 @@ Speichere und lege dann das Gerät im Tab **Entdecken** der Integration an. Die 
 ### Die verfolgte Auswahl
 
 Ein Rückruf ist in deiner Auswahl, wenn seine Kategorie verfolgt wird **und**, falls du Marken oder
-Wörter eingegeben hast, er eines davon nennt. Zum Beispiel verfolgen die Kategorien „Babys und
-Kinder“ und „Lebensmittel“ mit den Wörtern `lait infantile, petit pot` Babynahrung und alle
-Babyartikel. Die Blätter sind auf Französisch: Gib französische Wörter ein.
+Wörter eingegeben hast, er eines davon nennt. Die Wörter gelten für alle verfolgten Kategorien und
+müssen auf Französisch sein, wie die Blätter. Zum Beispiel verfolgt die Kategorie „Lebensmittel“
+mit den Wörtern `lait infantile, petit pot` nur die Rückrufe von Babymilch und Babygläschen; um
+zusätzlich alle Babyartikel zu verfolgen, lass die Wörter leer und wähle nur die Kategorie „Babys
+und Kinder“.
 
 Die Barcodes werden **unabhängig von den Kategorien** verfolgt: Ein Rückruf, der einen davon nennt,
 ist immer in deiner Auswahl. Gesucht wird auch in der **gesamten Historie** von RappelConso:
@@ -82,7 +84,8 @@ in deiner Auswahl. Filter: die Kategorien (leer: alle). Ein korrigiertes Blatt (
 wenn du deine Auswahl erweiterst, oder die beim allerersten Start gefundenen.
 
 **RappelConso: einer meiner Barcodes wird zurückgerufen.** Ein laufender Rückruf nennt zum ersten
-Mal einen deiner Barcodes. Optionaler Filter: ein Barcode, so eingegeben wie in den Einstellungen.
+Mal einen deiner Barcodes. Optionaler Filter: ein Barcode, nur Ziffern und ohne führende Nullen
+(`3017620422003`), so wie ihn die Variable `barcode` liefert.
 Er wird auch ausgelöst, wenn du den Barcode eines bereits zurückgerufenen Produkts hinzufügst.
 
 Variablen beider Auslöser: Produkt, Marke, Kategorie (fester Schlüssel wie `food`), Kategorie
@@ -142,4 +145,11 @@ Tag. Der Datensatz wird mehrmals täglich aktualisiert.
   wegwirfst.
 - Die Texte der Blätter sind auf Französisch.
 - „Rückrufe heute“ wird bei der ersten Aktualisierung nach Mitternacht aktualisiert.
+- Ein korrigiertes Blatt kommt mit einem neuen Veröffentlichungsdatum zurück: Es zählt erneut in
+  „Rückrufe heute“, „Rückrufe in 7 Tagen“ und im Widget, löst aber keinen „neuen Rückruf“ aus.
+  Fahrzeugblätter werden nie als Korrektur nummeriert: Ein erneut veröffentlichtes kann ihn
+  höchstens einmal im Monat erneut auslösen.
+- Die Integration merkt sich unter `/data`, was sie gemeldet hat: Ist dieses Volume nicht
+  beschreibbar, werden die Barcode-Rückrufe bei jedem Neustart erneut gemeldet (eine Warnung in den
+  Protokollen sagt es).
 - Nicht mit der französischen Verwaltung verbunden. Daten: RappelConso, Licence Ouverte 2.0.

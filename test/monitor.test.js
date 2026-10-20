@@ -142,10 +142,10 @@ test('barcodes: running recalls of any date, fired once, even at the first start
   const fired = events(w, TRIGGERS.BARCODE);
   assert.deepEqual(
     fired.map((event) => event.data.barcode),
-    [`0${CONFIT_BARCODE}`, TROUT_BARCODE, SPORTS_BARCODE],
+    [CONFIT_BARCODE, TROUT_BARCODE, SPORTS_BARCODE],
   );
   assert.equal(fired[2].data.category, 'sports_leisure');
-  assert.match(fired[0].data.summary, /^Votre produit 03113010173927 est rappelé : Confit/);
+  assert.match(fired[0].data.summary, /^Votre produit 3113010173927 est rappelé : Confit/);
   // The barcode recall is also in the selection, whatever the categories.
   assert.deepEqual(
     w.monitor.barcodeRecalls.map((recall) => recall.key),
@@ -233,4 +233,26 @@ test('onPoll is only a fallback: no new request within half an interval', async 
   w.clock.advance(31 * 60 * 1000);
   await w.fake.poll(device);
   assert.equal(api.requests.length, before + 1);
+});
+
+test('a scene event Gladys refused is sent again at the next cycle', async (t) => {
+  const w = await world(t);
+  const publish = t.mock.method(w.gladys, 'publishSceneEvent', async () => {
+    throw new Error('HTTP 429');
+  });
+  await w.monitor.reconfigure(normalizeConfig({ barcodes: CONFIT_BARCODE }));
+  assert.equal(publish.mock.callCount(), 1);
+  publish.mock.restore();
+  await cycle(w);
+  assert.equal(events(w, TRIGGERS.BARCODE).length, 1);
+  await cycle(w);
+  assert.equal(events(w, TRIGGERS.BARCODE).length, 1);
+});
+
+test('a barcode removed then added again fires again', async (t) => {
+  const w = await world(t, { barcodes: CONFIT_BARCODE });
+  assert.equal(events(w, TRIGGERS.BARCODE).length, 1);
+  await w.monitor.reconfigure(normalizeConfig({}));
+  await w.monitor.reconfigure(normalizeConfig({ barcodes: CONFIT_BARCODE }));
+  assert.equal(events(w, TRIGGERS.BARCODE).length, 2);
 });

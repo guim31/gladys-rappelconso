@@ -46,9 +46,11 @@ Enregistrez, puis créez l'appareil dans l'onglet **Découverte** de l'intégrat
 ### La sélection suivie
 
 Un rappel est dans votre sélection quand sa catégorie est suivie **et**, si vous avez saisi des
-marques ou des mots, qu'il en cite un. Par exemple, les catégories « Bébés-enfants » et
-« Alimentation » avec les mots `lait infantile, petit pot` suivent l'alimentation infantile et tous
-les articles de puériculture.
+marques ou des mots, qu'il en cite un. Les mots valent pour toutes les catégories suivies, et
+s'écrivent en français, comme les fiches. Par exemple, la catégorie « Alimentation » avec les mots
+`lait infantile, petit pot` ne suit que les rappels de lait infantile et de petits pots ; pour suivre
+aussi tous les articles de puériculture, laissez les mots vides et choisissez la seule catégorie
+« Bébés-enfants ».
 
 Les codes-barres sont suivis **quelles que soient les catégories** : un rappel qui en cite un est
 toujours dans votre sélection. Ils sont aussi cherchés dans **tout l'historique** de RappelConso :
@@ -83,8 +85,8 @@ d'un rappel plus ancien) ne le déclenche pas, pas plus que les rappels de la se
 quand vous élargissez votre sélection, ni ceux trouvés au tout premier démarrage.
 
 **RappelConso : un de mes codes-barres est rappelé.** Un rappel en cours cite un de vos
-codes-barres, pour la première fois. Filtre facultatif : un code-barres, saisi comme dans les
-réglages. Il se déclenche aussi quand vous ajoutez le code-barres d'un produit déjà rappelé.
+codes-barres, pour la première fois. Filtre facultatif : un code-barres, en chiffres seuls et sans
+zéros devant (`3017620422003`), tel que le donne la variable `barcode`. Il se déclenche aussi quand vous ajoutez le code-barres d'un produit déjà rappelé.
 
 Variables des deux déclencheurs : produit, marque, catégorie (clé stable comme `food`), catégorie en
 toutes lettres, motif, risques, lien de la fiche de rappel, un résumé en une phrase, et le
@@ -141,4 +143,11 @@ de requêtes par jour. Le jeu de données est mis à jour plusieurs fois par jou
   sans code-barres sur la fiche peut échapper. Vérifiez toujours la fiche avant de jeter un produit.
 - Les textes des fiches sont en français.
 - « Rappels du jour » est mis à jour à la première mise à jour après minuit.
+- Une fiche corrigée revient avec une nouvelle date de publication : elle compte de nouveau dans
+  « Rappels du jour », « Rappels sur 7 jours » et le widget, mais ne déclenche pas « nouveau
+  rappel ». Les fiches de véhicules ne sont jamais numérotées comme corrections : une fiche
+  republiée peut le redéclencher, une fois par mois au plus.
+- L'intégration retient sous `/data` ce qu'elle a annoncé : si ce volume n'est pas inscriptible,
+  les rappels de codes-barres sont annoncés de nouveau à chaque redémarrage (un avertissement le
+  dit dans les logs).
 - Non affiliée à l'administration. Données : RappelConso, Licence Ouverte 2.0.

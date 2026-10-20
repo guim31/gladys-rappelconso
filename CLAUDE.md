@@ -260,3 +260,7 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
   d'un code : c'est son but.
 - Le texte des fiches est en minuscules et en français : majuscule initiale à l'affichage, pas de
   traduction.
+- Une fiche ou une paire code-barres n'est marquée « annoncée » **qu'après** un `publishSceneEvent`
+  réussi : un événement refusé (429, Gladys redémarre) ou au-delà du plafond du cycle repart au
+  cycle suivant. Le filtre `barcode` du déclencheur compare à l'identique : `data.barcode` est la
+  forme canonique (chiffres, sans zéros de tête).

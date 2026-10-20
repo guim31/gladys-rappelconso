@@ -44,8 +44,10 @@ recalls of the week** reads RappelConso again and shows what your selection hold
 ### The followed selection
 
 A recall is in your selection when its category is followed **and**, if you typed brands or words,
-it names one of them. For example, the categories "Babies and children" and "Food" with the words
-`lait infantile, petit pot` follow baby food and every baby item.
+it names one of them. The words apply to every followed category, and must be in French, like the
+sheets. For example, the category "Food" with the words `lait infantile, petit pot` follows only the
+recalls of baby milk and baby food jars; to follow every baby item as well, leave the words empty
+and choose the category "Babies and children" alone.
 
 The barcodes are followed **whatever the categories**: a recall naming one of them is always in
 your selection. They are also looked for in the **whole history** of RappelConso: a recall
@@ -80,7 +82,8 @@ recall) does not fire it, nor do the recalls of the week already published when 
 selection, nor those found at the very first start.
 
 **RappelConso: one of my barcodes is recalled.** A running recall names one of your barcodes, for
-the first time. Optional filter: one barcode, typed as in the settings. It also fires when you add
+the first time. Optional filter: one barcode, digits only and without leading zeros
+(`3017620422003`), as the `barcode` variable gives it. It also fires when you add
 the barcode of a product already recalled.
 
 Variables of both triggers: product, brand, category (stable key such as `food`), category in
@@ -136,4 +139,9 @@ several times a day.
   a barcode on the sheet can be missed. Always check the sheet before throwing a product away.
 - The texts of the sheets are in French.
 - "Recalls today" is updated at the next refresh after midnight.
+- A corrected sheet comes back with a new publication date: it counts again in "Recalls today",
+  "Recalls in 7 days" and the widget, but fires no "new recall" trigger. Vehicle sheets are never
+  numbered as corrections: a republished one can fire it again, once a month at most.
+- The integration remembers what it announced under `/data`: if that volume cannot be written, the
+  barcode recalls are announced again at every restart (a warning says so in the logs).
 - Not affiliated with the French administration. Data: RappelConso, Licence Ouverte 2.0.
