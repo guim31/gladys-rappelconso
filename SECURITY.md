@@ -28,8 +28,11 @@ Gladys before reporting a problem.
 
 ## Scope
 
-In scope: the code of this repository and the Docker image it publishes.
+In scope: the code of this repository and the Docker image it publishes. The integration stores
+under `/data` only the numbers of the recall sheets already seen and the barcode matches already
+announced. It holds no secret: the open data is read without an account, over HTTPS, from
+`data.economie.gouv.fr` only. The barcodes you follow are sent in the queries to that API.
 
 Out of scope: Gladys Assistant itself (see its
 [security policy](https://github.com/GladysAssistant/Gladys/security/policy)),
-and the third-party services and devices the integration talks to.
+and the RappelConso website and open data platform.

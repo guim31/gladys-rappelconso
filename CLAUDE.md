@@ -32,15 +32,19 @@ pushing.
 
 ```
 index.js                          SDK wiring only: handlers registered before connect()
-src/devices/index.js              registry of the device blueprints + dispatch helpers
-src/devices/<type>.js             one device type per file (buildDevice, onPoll, onSetValue...)
-src/scenes.js                     scene action handlers (manifest `scene_actions`)
-src/widgets.js                    dashboard widget handlers (manifest `widgets`)
+src/app.js                        registers every SDK handler on a GladysIntegration (or the fake)
+src/monitor.js                    refresh cycle: RappelConso → selection → states, scene triggers
+src/rappelconso.js                Opendatasoft client (8-day window, barcode search, paging, parsing)
+src/device.js                     the one device: external ids, feature names, buildDevice
+src/actions.js                    scene action `read_recalls`, configuration action `check_now`
+src/widgets.js                    dashboard widget `recalls` (card-list)
+src/messages.js                   texts of the container in en/fr/de/es, date formats
 src/config.js                     DEFAULT_CONFIG (mirrors the manifest defaults) + normalization
-src/weather.js                    example driver (Open-Meteo)
+src/store.js                      /data/rappelconso.json: sheets seen, barcode matches (atomic writes)
 gladys-assistant-integration.json manifest: name, config_schema, actions, image...
-docs/en.md, docs/fr.md            user documentation, re-hosted by Gladys (mandatory)
-test/                             node --test, against the SDK's fake Gladys (integration-sdk/testing)
+docs/{en,fr,de,es}.md             user documentation, re-hosted by Gladys (en and fr mandatory)
+test/                             node --test, against the SDK's fake Gladys and a fake API
+test/fixtures/rappelconso/        real sheets recorded on 20/10/2026 (94 of a week, 4 by barcode)
 .github/scripts/release.mjs       release helpers (manifest bump, changelog), tested in test/
 ```
 
@@ -70,8 +74,9 @@ test/                             node --test, against the SDK's fake Gladys (in
   `type: "provider"`: 5.1.0). `test/manifest.test.js` ties the manifest to the
   code (defaults, action, scene and widget handlers): change both sides
   together.
-- **User-facing text** is bilingual (English and French): action messages,
-  manifest texts, and `docs/en.md` / `docs/fr.md`, kept in sync.
+- **User-facing text** exists in English, French, German ("du") and Spanish
+  ("usted"): manifest, messages, feature names, widget, and `docs/*.md` with the
+  same sections. `test/i18n.test.js` enforces it.
 - **Style.** Prettier formats, ESLint catches mistakes. Comments explain why,
   in English. Tests never touch the network.
 
@@ -233,3 +238,25 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
 - Docs `en`, `fr`, `de`, `es` avec les mêmes sections.
 - Chauffe, ouverture, sécurité : ne rien rendre pilotable « comme un thermostat » ou par un assistant
   vocal quand une erreur serait dangereuse (leçon d'OctoPrint).
+
+## RappelConso (cette intégration)
+
+- Source : jeu `rappelconso-v2-gtin-espaces` de data.economie.gouv.fr (API Explore v2.1 d'Opendatasoft,
+  Licence Ouverte 2.0, sans clé). Le jeu `rappelconso-v2-gtin-trie` est le même, une ligne par GTIN
+  (plus de lignes, pas utile ici). Quota anonyme : 50 000 requêtes par jour et par IP
+  (`x-ratelimit-*`). Environ 90 rappels par semaine (mesuré le 20/10/2026) : la fenêtre de 8 jours
+  tient en une page de 100.
+- **Le jeu ne garde que la dernière version d'une fiche** : une fiche corrigée revient avec
+  `numero_version` 2 et une nouvelle `date_publication`. Les fiches d'automobiles sortent en
+  version 0, avec des numéros `sr/…`. « Nouveau rappel » = fiche jamais vue et version ≤ 1.
+- `identification_produits` est une liste plate, quatre cellules par produit (GTIN, lot, type de
+  date, date), le GTIN du deuxième produit et des suivants **préfixé par `|`** : `in ("…")` les
+  rate, `like "…"` (recherche plein texte du champ) les trouve. Les lots y sont mêlés : le
+  conteneur vérifie localement le jeton exact (8 à 14 chiffres, zéros de tête ignorés).
+- `date_de_fin_de_la_procedure_de_rappel` n'est plus remplie depuis juillet 2026 : un rappel sans
+  date de fin compte comme en cours.
+- Toutes les fiches lues sont mémorisées (dans la sélection ou non) : élargir la sélection ne
+  déclenche rien. Le déclencheur code-barres, lui, part aussi au premier démarrage et à l'ajout
+  d'un code : c'est son but.
+- Le texte des fiches est en minuscules et en français : majuscule initiale à l'affichage, pas de
+  traduction.
