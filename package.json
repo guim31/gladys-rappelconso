@@ -1,6 +1,6 @@
 {
   "name": "gladys-rappelconso",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Product recalls in France (RappelConso open data) for Gladys Assistant: device, scene triggers, action and widget.",
   "type": "module",
