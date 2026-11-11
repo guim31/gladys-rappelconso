@@ -24,7 +24,7 @@ sus indicaciones. Sin afiliación con la administración francesa.
 
 ## Requisitos
 
-- Gladys Assistant 5.1.0 o posterior (widgets, disparadores y acciones de escena).
+- Gladys Assistant 5.3.0 o posterior (países del catálogo; 5.1.0 para widgets, disparadores y acciones de escena).
 - Acceso a Internet de Gladys a `data.economie.gouv.fr`.
 - Nada más: los datos son abiertos y se leen sin cuenta.
 

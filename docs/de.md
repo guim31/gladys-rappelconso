@@ -23,7 +23,7 @@ Hinweise. Nicht mit der französischen Verwaltung verbunden.
 
 ## Voraussetzungen
 
-- Gladys Assistant 5.1.0 oder neuer (Widgets, Szenenauslöser und -aktionen).
+- Gladys Assistant 5.3.0 oder neuer (Länder im Katalog; 5.1.0 für Widgets, Szenenauslöser und -aktionen).
 - Internetzugang von Gladys zu `data.economie.gouv.fr`.
 - Sonst nichts: Die Daten sind offen und werden ohne Konto gelesen.
 

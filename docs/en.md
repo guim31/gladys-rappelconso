@@ -22,7 +22,7 @@ instructions. Not affiliated with the French administration.
 
 ## Requirements
 
-- Gladys Assistant 5.1.0 or later (widgets, scene triggers and actions).
+- Gladys Assistant 5.3.0 or later (catalog countries; 5.1.0 for widgets, scene triggers and actions).
 - Internet access from Gladys to `data.economie.gouv.fr`.
 - Nothing else: the data is open, read without an account.
 

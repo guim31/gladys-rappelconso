@@ -24,7 +24,7 @@ ses consignes. Non affiliée à l'administration.
 
 ## Prérequis
 
-- Gladys Assistant 5.1.0 ou plus récent (widgets, déclencheurs et actions de scène).
+- Gladys Assistant 5.3.0 ou plus récent (pays du catalogue ; 5.1.0 pour widgets, déclencheurs et actions de scène).
 - Un accès Internet de Gladys vers `data.economie.gouv.fr`.
 - Rien d'autre : les données sont ouvertes, lues sans compte.
 
