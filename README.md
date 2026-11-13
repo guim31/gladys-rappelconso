@@ -23,7 +23,7 @@ French administration (DGCCRF, DGAL, Ministry of the Economy).
 
 ## Requirements
 
-- Gladys Assistant 5.1 or later.
+- Gladys Assistant 5.3 or later.
 - Internet access from the Gladys host (`data.economie.gouv.fr`).
 
 ## Installation
